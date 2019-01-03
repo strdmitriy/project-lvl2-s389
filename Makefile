@@ -5,6 +5,6 @@ start:
 publish:
 	npm publish
 lint:
-	npx run eslint .
+	npx eslint .
 test:
 	npm run test
