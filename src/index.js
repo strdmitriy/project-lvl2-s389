@@ -18,10 +18,10 @@ const parse = (obj1, obj2) => {
   return `{\n${difference.join('\n')}\n}`;
 };
 
-const genDiff = (pathToobj1, pathToobj2) => {
-  const obj1 = JSON.parse(fs.readFileSync(pathToobj1));
-  const obj2 = JSON.parse(fs.readFileSync(pathToobj2));
-  return parse(obj1, obj2);
+const genDiff = (pathToFile1, pathToFile2) => {
+  const beforeObj = JSON.parse(fs.readFileSync(pathToFile1));
+  const afterObj = JSON.parse(fs.readFileSync(pathToFile2));
+  return parse(beforeObj, afterObj);
 };
 
 export default genDiff;
