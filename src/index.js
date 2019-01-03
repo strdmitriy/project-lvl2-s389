@@ -6,16 +6,16 @@ const isFileChange = (beforeJson, afterJson) => {
   const keys = Object.keys({ ...beforeJson, ...afterJson });
   const difference = keys.reduce((acc, key) => {
     if (beforeJson[key] === afterJson[key]) {
-      return [...acc, `   ${key}: ${beforeJson[key]}`];
+      return [...acc, `    ${key}: ${beforeJson[key]}`];
     }
     if (!has(afterJson, key)) {
-      return [...acc, ` - ${key}: ${beforeJson[key]}`];
+      return [...acc, `  - ${key}: ${beforeJson[key]}`];
     }
     if (!has(beforeJson, key)) {
-      return [...acc, ` + ${key}: ${afterJson[key]}`];
-    } return [...acc, ` + ${key}: ${afterJson[key]}\n - ${key}: ${beforeJson[key]}`];
+      return [...acc, `  + ${key}: ${afterJson[key]}`];
+    } return [...acc, `  + ${key}: ${afterJson[key]}\n  - ${key}: ${beforeJson[key]}`];
   }, []);
-  return console.log(`{\n${difference.join('\n')}\n}`);
+  return `{\n${difference.join('\n')}\n}`;
 };
 
 const genDiff = (pathTobeforeJson, pathToafterJson) => {

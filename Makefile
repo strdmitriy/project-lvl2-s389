@@ -1,10 +1,10 @@
 install:
 	npm install
 start:
-	npx babel-node -- src/bin/gendiff.js before.json after.json
+	npx babel-node -- src/bin/gendiff.js
 publish:
 	npm publish
 lint:
-	npm run eslint .
+	npx run eslint .
 test:
 	npm run test
