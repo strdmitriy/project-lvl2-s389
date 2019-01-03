@@ -2,7 +2,7 @@
 import { has } from 'lodash';
 import fs from 'fs';
 
-const getDiff = (beforeJson, afterJson) => {
+const isFileChange = (beforeJson, afterJson) => {
   const keys = Object.keys({ ...beforeJson, ...afterJson });
   const difference = keys.reduce((acc, key) => {
     if (beforeJson[key] === afterJson[key]) {
@@ -21,7 +21,7 @@ const getDiff = (beforeJson, afterJson) => {
 const genDiff = (pathTobeforeJson, pathToafterJson) => {
   const beforeJson = JSON.parse(fs.readFileSync(pathTobeforeJson));
   const afterJson = JSON.parse(fs.readFileSync(pathToafterJson));
-  return getDiff(beforeJson, afterJson);
+  return isFileChange(beforeJson, afterJson);
 };
 
 export default genDiff;
