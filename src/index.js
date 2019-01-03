@@ -1,27 +1,27 @@
 
-import { has } from 'lodash';
+import _ from 'lodash';
 import fs from 'fs';
 
-const isFileChange = (beforeJson, afterJson) => {
-  const keys = Object.keys({ ...beforeJson, ...afterJson });
+const parse = (obj1, obj2) => {
+  const keys = _.union(_.keys(obj1), _.keys(obj2));
   const difference = keys.reduce((acc, key) => {
-    if (beforeJson[key] === afterJson[key]) {
-      return [...acc, `    ${key}: ${beforeJson[key]}`];
+    if (!_.has(obj2, key)) {
+      return [...acc, `  - ${key}: ${obj1[key]}`];
     }
-    if (!has(afterJson, key)) {
-      return [...acc, `  - ${key}: ${beforeJson[key]}`];
+    if (!_.has(obj1, key)) {
+      return [...acc, `  + ${key}: ${obj2[key]}`];
     }
-    if (!has(beforeJson, key)) {
-      return [...acc, `  + ${key}: ${afterJson[key]}`];
-    } return [...acc, `  + ${key}: ${afterJson[key]}\n  - ${key}: ${beforeJson[key]}`];
+    if (obj1[key] === obj2[key]) {
+      return [...acc, `    ${key}: ${obj1[key]}`];
+    } return [...acc, `  + ${key}: ${obj2[key]}\n  - ${key}: ${obj1[key]}`];
   }, []);
   return `{\n${difference.join('\n')}\n}`;
 };
 
-const genDiff = (pathTobeforeJson, pathToafterJson) => {
-  const beforeJson = JSON.parse(fs.readFileSync(pathTobeforeJson));
-  const afterJson = JSON.parse(fs.readFileSync(pathToafterJson));
-  return isFileChange(beforeJson, afterJson);
+const genDiff = (pathToobj1, pathToobj2) => {
+  const obj1 = JSON.parse(fs.readFileSync(pathToobj1));
+  const obj2 = JSON.parse(fs.readFileSync(pathToobj2));
+  return parse(obj1, obj2);
 };
 
 export default genDiff;
