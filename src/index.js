@@ -21,11 +21,12 @@ const render = (obj1, obj2) => {
 };
 
 const genDiff = (pathToFile1, pathToFile2) => {
-  const readingFile1 = fs.readFileSync(pathToFile1);
-  const readingFile2 = fs.readFileSync(pathToFile2);
-  const extnameFile1 = path.extname(pathToFile1);
-  const extnameFile2 = path.extname(pathToFile2);
-  return render(parseObj(readingFile1, extnameFile1), parseObj(readingFile2, extnameFile2));
+  const fileContentBefore = fs.readFileSync(pathToFile1, 'utf8');
+  const fileContentAfter = fs.readFileSync(pathToFile2, 'utf8');
+  const extnameBefore = path.extname(pathToFile1);
+  const extnameAfter = path.extname(pathToFile2);
+  return render(parseObj(fileContentBefore, extnameBefore),
+    parseObj(fileContentAfter, extnameAfter));
 };
 
 export default genDiff;
