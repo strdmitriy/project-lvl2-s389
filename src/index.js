@@ -5,7 +5,7 @@ import parseObj from './parsers';
 
 const createAst = (obj1, obj2) => {
   const keys = _.union(_.keys(obj1), _.keys(obj2));
-  const arr = keys.map((key) => {
+  const treeAst = keys.map((key) => {
     if (!_.has(obj2, key)) {
       return { name: key, type: 'removed', beforeJson: obj1[key] };
     } if (!_.has(obj1, key)) {
@@ -14,12 +14,14 @@ const createAst = (obj1, obj2) => {
       const childrenObj1 = obj1[key];
       const childrenObj2 = obj2[key];
       const children = createAst(childrenObj1, childrenObj2);
-      return { name: key, type: 'children', children };
+      return { name: key, type: 'parent', children };
     } if (obj1[key] === obj2[key]) {
       return { name: key, type: 'unchanged', beforeJson: obj1[key] };
-    } return { name: key, type: 'change', afterjson: obj2[key] };
+    } return {
+      name: key, type: 'changed', beforeJson: obj1[key], afterJson: obj2[key],
+    };
   });
-  return arr;
+  return treeAst;
 };
 
 const genDiff = (pathToFile1, pathToFile2) => {
