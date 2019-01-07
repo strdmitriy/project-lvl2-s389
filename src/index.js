@@ -2,7 +2,7 @@ import _ from 'lodash';
 import fs from 'fs';
 import path from 'path';
 import parseObj from './parsers';
-import render from './render';
+import renderers from './renderers';
 
 const createAst = (obj1, obj2) => {
   const keys = _.union(_.keys(obj1), _.keys(obj2));
@@ -22,14 +22,14 @@ const createAst = (obj1, obj2) => {
   return treeAst;
 };
 
-const genDiff = (pathToFile1, pathToFile2) => {
+const genDiff = (pathToFile1, pathToFile2, format) => {
   const fileContentBefore = fs.readFileSync(pathToFile1, 'utf8');
   const fileContentAfter = fs.readFileSync(pathToFile2, 'utf8');
   const extnameBefore = path.extname(pathToFile1);
   const extnameAfter = path.extname(pathToFile2);
   const astTree = createAst(parseObj(fileContentBefore, extnameBefore),
     parseObj(fileContentAfter, extnameAfter));
-  return render(astTree);
+  return renderers(astTree, format);
 };
 
 export default genDiff;

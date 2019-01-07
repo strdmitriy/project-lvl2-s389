@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 const renderValue = (value, indentWidth, indentation, nesting) => {
   const depth = nesting + 1;
-  if (_.isObject(value)) {
+  if (value instanceof Object) {
     const indentationValue = ' '.repeat(depth * indentWidth);
     const body = _.keys(value).map(key => `${indentationValue}${key}: ${renderValue(value[key])}`);
     return `{\n${body.join('\n')}\n${indentation}}`;
@@ -10,6 +10,7 @@ const renderValue = (value, indentWidth, indentation, nesting) => {
 };
 
 const renderAst = (ast, nesting = 1) => {
+  console.log(ast);
   const indentWidth = 4;
   const indentation = ' '.repeat(nesting * indentWidth);
   const nodeList = (node) => {
