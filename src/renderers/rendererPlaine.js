@@ -4,7 +4,6 @@ const complexValue = (value) => {
   } return value;
 };
 
-
 const renderingPlainTree = (ast) => {
   const iter = (node, acc, path) => {
     const {
