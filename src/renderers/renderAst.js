@@ -2,11 +2,12 @@ import _ from 'lodash';
 
 const renderValue = (value, indentWidth, indentation, nesting) => {
   const depth = nesting + 1;
-  if (value instanceof Object) {
-    const indentationValue = ' '.repeat(depth * indentWidth);
-    const body = _.keys(value).map(key => `${indentationValue}${key}: ${renderValue(value[key])}`);
-    return `{\n${body.join('\n')}\n${indentation}}`;
-  } return value;
+  if (!(value instanceof Object)) {
+    return value;
+  }
+  const indentationValue = ' '.repeat(depth * indentWidth);
+  const body = _.keys(value).map(key => `${indentationValue}${key}: ${renderValue(value[key])}`);
+  return `{\n${body.join('\n')}\n${indentation}}`;
 };
 
 const renderingAstTree = (ast, nesting = 1) => {
