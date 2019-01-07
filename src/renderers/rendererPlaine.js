@@ -5,7 +5,7 @@ const complexValue = (value) => {
 };
 
 
-const plainTree = (ast) => {
+const renderingPlainTree = (ast) => {
   const iter = (node, acc, path) => {
     const {
       name, type, children, oldValue, newValue,
@@ -26,4 +26,4 @@ const plainTree = (ast) => {
   return output.join('\n');
 };
 
-export default plainTree;
+export default renderingPlainTree;

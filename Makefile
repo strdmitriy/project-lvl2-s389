@@ -1,7 +1,7 @@
 install:
 	npm install
 start:
-	npx babel-node -- src/bin/gendiff.js -f plain beforeTree.json afterTree.json
+	npx babel-node -- src/bin/gendiff.js -f
 publish:
 	npm publish
 lint:
