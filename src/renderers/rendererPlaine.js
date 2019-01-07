@@ -12,15 +12,18 @@ const renderingPlainTree = (ast) => {
     } = node;
     const newAncestry = [...path, name];
     const fullPath = newAncestry.join('.');
-    if (type === 'parent') {
-      return [...acc, ...children.reduce((iAcc, n) => iter(n, iAcc, newAncestry), [])];
-    } if (type === 'added') {
-      return [...acc, `Property ${fullPath} was added with '${complexValue(newValue)}'`];
-    } if (type === 'deleted') {
-      return [...acc, `Property ${fullPath} was removed`];
-    } if (node.type === 'changed') {
-      return [...acc, `Property '${fullPath}' was updated. From '${complexValue(oldValue)}' to '${complexValue(newValue)}'`];
-    } return acc;
+    switch (type) {
+      case 'parent':
+        return [...acc, ...children.reduce((iAcc, n) => iter(n, iAcc, newAncestry), [])];
+      case 'added':
+        return [...acc, `Property ${fullPath} was added with '${complexValue(newValue)}'`];
+      case 'deleted':
+        return [...acc, `Property ${fullPath} was removed`];
+      case 'changed':
+        return [...acc, `Property '${fullPath}' was updated. From '${complexValue(oldValue)}' to '${complexValue(newValue)}'`];
+      default:
+        return acc;
+    }
   };
   const output = ast.reduce((acc, node) => iter(node, acc, []), []);
   return output.join('\n');

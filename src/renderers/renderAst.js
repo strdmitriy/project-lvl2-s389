@@ -16,17 +16,20 @@ const renderingAstTree = (ast, nesting = 1) => {
     const {
       name, type, children, oldValue, newValue,
     } = node;
-    if (type === 'parent') {
-      return `${indentation}${name}: ${renderingAstTree(children, nesting + 1)}`;
-    } if (type === 'added') {
-      return `${indentation.slice(2)}+ ${name}: ${renderValue(newValue, indentWidth, indentation, nesting)}`;
-    } if (type === 'deleted') {
-      return `${indentation.slice(2)}- ${name}: ${renderValue(oldValue, indentWidth, indentation, nesting)}`;
-    } if (type === 'changed') {
-      return [`${indentation.slice(2)}- ${name}: ${renderValue(oldValue, indentWidth, indentation, nesting)}`, `${indentation.slice(2)}+ ${name}: ${renderValue(newValue, indentWidth, indentation, nesting)}`];
-    } if (type === 'unchanged') {
-      return `${indentation}${name}: ${renderValue(oldValue, indentWidth, indentation, nesting)}`;
-    } return null;
+    switch (type) {
+      case 'parent':
+        return `${indentation}${name}: ${renderingAstTree(children, nesting + 1)}`;
+      case 'added':
+        return `${indentation.slice(2)}+ ${name}: ${renderValue(newValue, indentWidth, indentation, nesting)}`;
+      case 'deleted':
+        return `${indentation.slice(2)}- ${name}: ${renderValue(oldValue, indentWidth, indentation, nesting)}`;
+      case 'changed':
+        return [`${indentation.slice(2)}- ${name}: ${renderValue(oldValue, indentWidth, indentation, nesting)}`, `${indentation.slice(2)}+ ${name}: ${renderValue(newValue, indentWidth, indentation, nesting)}`];
+      case 'unchanged':
+        return `${indentation}${name}: ${renderValue(oldValue, indentWidth, indentation, nesting)}`;
+      default:
+        throw new Error(`Unknown type ${type}`);
+    }
   };
   const output = _.flatten(ast.reduce((acc, el) => [...acc, nodeList(el)], []));
   return `{\n${output.join('\n')}\n${indentation.slice(indentWidth)}}`;
