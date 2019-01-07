@@ -1,13 +1,13 @@
 import renderAst from './renderAst';
 import renderJson from './renderJson';
-import renderPlain from './rendererPlaine';
+import renderPlain from './renderPlain';
 
-const render = (ast, format) => {
-  if (format === 'plain') {
-    return renderPlain(ast);
-  } if (format === 'json') {
-    return renderJson(ast);
-  } return renderAst(ast);
+const formatSelection = {
+  json: renderJson,
+  plain: renderPlain,
+  ast: renderAst,
 };
+
+const render = (ast, format) => formatSelection[format](ast);
 
 export default render;

@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 const complexValue = (value) => {
   if (value instanceof Object) {
     return '[complex value]';
@@ -13,7 +15,7 @@ const renderingPlainTree = (ast) => {
     const fullPath = newAncestry.join('.');
     switch (type) {
       case 'parent':
-        return [...acc, ...children.reduce((iAcc, n) => iter(n, iAcc, newAncestry), [])];
+        return [...acc, ..._.flatten(children.map(n => iter(n, [], newAncestry)))];
       case 'added':
         return [...acc, `Property ${fullPath} was added with '${complexValue(newValue)}'`];
       case 'deleted':
@@ -24,7 +26,7 @@ const renderingPlainTree = (ast) => {
         return acc;
     }
   };
-  const output = ast.reduce((acc, node) => iter(node, acc, []), []);
+  const output = _.flatten(ast.map(node => iter(node, [], [])));
   return output.join('\n');
 };
 
